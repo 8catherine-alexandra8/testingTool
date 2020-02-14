@@ -47,8 +47,13 @@ class Runner {
 				//files.push(childFiles); won't work because I'd end up with
 				//an childFiles array nested inside of the files array
 				//so using spread operator which will add each element of
-				//child files individually into the files array
-				files.push(...childFiles);
+				//child files individually into the files array.  Also,
+				//this doesn't quite work either: files.push(...childFiles);
+				//because when the for loop starts iterating over what
+				//is being added now, this line: const filepath = path.join(targetPath, file);
+				//isn't going to yeild the correct path for these elements
+				//so using map to add the childFiles with correct paths
+				files.push(...childFiles.map((f) => path.join(file, f)));
 			}
 		}
 	}
