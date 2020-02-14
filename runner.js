@@ -14,10 +14,22 @@ class Runner {
 	//add a method for running the tests in the test files once they've all
 	//been collected into the testFiles array
 	async runTests() {
+		//define "it" globally
 		//iterate through the testFiles array, and remember that 'file' is an
 		//object with a name property that has a value of the absolute path of
 		//the file
 		for (let file of this.testFiles) {
+			//to mimic Mocha fully, define a beforeEach function
+			const beforeEaches = [];
+			global.beforeEach = (fn) => {
+				beforeEaches.push(fn);
+			};
+			//define "it" globally passing in the description for "it",
+			//as defined in the forEach.test.js and the function associated
+			//with "it"
+			global.it = (desc, fn) => {
+				console.log(desc);
+			};
 			//to execute each test file, require it.  Requiring in the file will
 			//cause node to find the file, load up the code and execute the code
 			//insdie of it.
