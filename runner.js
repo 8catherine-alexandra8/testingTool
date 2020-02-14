@@ -13,6 +13,11 @@ class Runner {
 	//asynchronously, with an argument of target path which will
 	//reference the folder or absolute path to the folder that we
 	//want this function to investigate/collect from
-	async collectFiles(targetPath) {}
+	async collectFiles(targetPath) {
+		//use promise based readir function from NSL to deliver
+		//first array of targetPath's contents
+		const files = await fs.promises.readdir(targetPath);
+		return files;
+	}
 }
 module.exports = Runner;
