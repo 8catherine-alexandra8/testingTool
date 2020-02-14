@@ -9,7 +9,7 @@ class Runner {
 	//needs to be executed
 	constructor() {
 		//define a place to store the test file references
-		this.file = [];
+		this.testFiles = [];
 	}
 	//define a function for collecting the test files which will run
 	//asynchronously, with an argument of target path which will
@@ -30,6 +30,16 @@ class Runner {
 			//the stats methods of isFile or isDirectory to the stats
 			//object
 			const stats = await fs.promises.lstat(filepath);
+			//determine if stats object is a file or a directory and
+			//whether or not a file has a .test extension
+			if (stats.isFile() && file.includes('.test.js')) {
+				//if the filepath is a file and it ends in .test.js,
+				//then save to this.testFiles array. Also, instead of just
+				//throwing the file name into the array, wrap it inside
+				//an object because that will be more useful
+				this.testFiles.push({ name: filepath });
+			} else if (stats.isDirectory()) {
+			}
 		}
 	}
 }
