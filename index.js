@@ -12,7 +12,7 @@ const runner = new Runner();
 const run = async () => {
 	//pass in process.cwd() so that collectFiles examines the directory
 	//from which tme is being run
-	const results = await runner.collectFiles(process.cwd());
-	console.log(results);
+	await runner.collectFiles(process.cwd());
+	console.log(runner.testFiles);
 };
 run();

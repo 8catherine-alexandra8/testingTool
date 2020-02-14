@@ -11,6 +11,19 @@ class Runner {
 		//define a place to store the test file references
 		this.testFiles = [];
 	}
+	//add a method for running the tests in the test files once they've all
+	//been collected into the testFiles array
+	async runTests() {
+		//iterate through the testFiles array, and remember that 'file' is an
+		//object with a name property that has a value of the absolute path of
+		//the file
+		for (let file of this.testFiles) {
+			//to execute each test file, require it.  Requiring in the file will
+			//cause node to find the file, load up the code and execute the code
+			//insdie of it.
+			require(file.name);
+		}
+	}
 	//define a function for collecting the test files which will run
 	//asynchronously, with an argument of target path which will
 	//reference the folder or absolute path to the folder that we
