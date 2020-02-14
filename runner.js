@@ -26,6 +26,10 @@ class Runner {
 			//by joining targetPath with the file name, using the path
 			//module from the NSL
 			const filepath = path.join(targetPath, file);
+			//run the lstat command on the filepath so that I can apply
+			//the stats methods of isFile or isDirectory to the stats
+			//object
+			const stats = await fs.promises.lstat(filepath);
 		}
 	}
 }
