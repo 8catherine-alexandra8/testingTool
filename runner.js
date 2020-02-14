@@ -1,5 +1,7 @@
 //require in fs module from node standard library
 const fs = require('fs');
+//require in path module from NSL
+const path = require('path');
 //create class to contain all the functions in this file
 //and export it via module.exports
 class Runner {
@@ -17,7 +19,14 @@ class Runner {
 		//use promise based readir function from NSL to deliver
 		//first array of targetPath's contents
 		const files = await fs.promises.readdir(targetPath);
-		return files;
+		//Iterate over the array created above and determine if each
+		//element is a file or a folder
+		for (let file of files) {
+			//convert the 'file' into the full absolute name of the file
+			//by joining targetPath with the file name, using the path
+			//module from the NSL
+			const filepath = path.join(targetPath, file);
+		}
 	}
 }
 module.exports = Runner;

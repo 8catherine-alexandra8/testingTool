@@ -10,7 +10,9 @@ const runner = new Runner();
 //support top-level await expressions.  Await statements must be
 //contained within a function
 const run = async () => {
-	const results = await runner.collectFiles();
+	//pass in process.cwd() so that collectFiles examines the directory
+	//from which tme is being run
+	const results = await runner.collectFiles(process.cwd());
 	console.log(results);
 };
 run();
