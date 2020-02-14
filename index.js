@@ -1,4 +1,16 @@
 #!/usr/bin/env node
 //Above is initial setup to be able to run this program
 //from the command line
-console.log('Running test!!...');
+//Below: requiring in Runner class from runner.js
+const Runner = require('./runner');
+//create new instance of the runner
+const runner = new Runner();
+//define a helper function to allow me to run collectFiles
+//from here, for testing as I build, because my node.js doesn't
+//support top-level await expressions.  Await statements must be
+//contained within a function
+const run = async () => {
+	const results = await runner.collectFiles();
+	console.log(results);
+};
+run();
