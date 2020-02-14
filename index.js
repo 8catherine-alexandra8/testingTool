@@ -13,6 +13,6 @@ const run = async () => {
 	//pass in process.cwd() so that collectFiles examines the directory
 	//from which tme is being run
 	await runner.collectFiles(process.cwd());
-	console.log(runner.testFiles);
+	runner.runTests();
 };
 run();
