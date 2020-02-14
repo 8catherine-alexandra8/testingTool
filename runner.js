@@ -39,6 +39,16 @@ class Runner {
 				//an object because that will be more useful
 				this.testFiles.push({ name: filepath });
 			} else if (stats.isDirectory()) {
+				//if stats object is a directory, then create an array
+				//containing the contents of the folder
+				const childFiles = await fs.promises.readdir(filepath);
+				//push childFiles into the "files" array that this for of
+				//loop is currently itterating over but this:
+				//files.push(childFiles); won't work because I'd end up with
+				//an childFiles array nested inside of the files array
+				//so using spread operator which will add each element of
+				//child files individually into the files array
+				files.push(...childFiles);
 			}
 		}
 	}
