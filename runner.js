@@ -28,7 +28,8 @@ class Runner {
 			//as defined in the forEach.test.js and the function associated
 			//with "it"
 			global.it = (desc, fn) => {
-				console.log(desc);
+				beforeEaches.forEach((func) => func());
+				fn();
 			};
 			//to execute each test file, require it.  Requiring in the file will
 			//cause node to find the file, load up the code and execute the code
