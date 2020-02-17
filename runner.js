@@ -23,7 +23,7 @@ class Runner {
 		for (let file of this.testFiles) {
 			//console log to indicate that some tests are about to run for
 			//whichever file I'm iterating over
-			console.log(chalk.white(`tesing file: ${file.name}`));
+			console.log(chalk.white(`tesing file: ${file.shortName}`));
 			//to mimic Mocha fully, define a beforeEach function
 			const beforeEaches = [];
 			global.beforeEach = (fn) => {
@@ -91,8 +91,10 @@ class Runner {
 				//if the filepath is a file and it ends in .test.js,
 				//then save to this.testFiles array. Also, instead of just
 				//throwing the file name into the array, wrap it inside
-				//an object because that will be more useful
-				this.testFiles.push({ name: filepath });
+				//an object because that will be more useful.  filepath yeilds
+				//the whole absolute file path. so passing in a reference to
+				//the relative path also, so that can be accessed later
+				this.testFiles.push({ name: filepath, shortName: file });
 			} else if (stats.isDirectory()) {
 				//if stats object is a directory, then create an array
 				//containing the contents of the folder
