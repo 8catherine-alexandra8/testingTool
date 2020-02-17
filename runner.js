@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 //require in chalk to make the test responses color coded
 const chalk = require('chalk');
+//require in render to be able to test web based projects
+const render = require('./render');
 //to make this test framework work on projects that rely on external dependencies
 //that may contain their own test files in their directories, set
 //up an array for directories that should be excluded from our search for test
@@ -32,6 +34,8 @@ class Runner {
 			console.log(chalk.white(`testing file: ${file.shortName}`));
 			//to mimic Mocha fully, define a beforeEach function
 			const beforeEaches = [];
+			//make render available to anyone using testing framework
+			global.render = render;
 			global.beforeEach = (fn) => {
 				beforeEaches.push(fn);
 			};
