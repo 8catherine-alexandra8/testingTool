@@ -23,7 +23,7 @@ class Runner {
 		for (let file of this.testFiles) {
 			//console log to indicate that some tests are about to run for
 			//whichever file I'm iterating over
-			console.log(chalk.gray(`----${file.name}`));
+			console.log(chalk.white(`tesing file: ${file.name}`));
 			//to mimic Mocha fully, define a beforeEach function
 			const beforeEaches = [];
 			global.beforeEach = (fn) => {
