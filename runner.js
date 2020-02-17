@@ -2,6 +2,8 @@
 const fs = require('fs');
 //require in path module from NSL
 const path = require('path');
+//require in chalk to make the test responses color coded
+const chalk = require('chalk');
 //create class to contain all the functions in this file
 //and export it via module.exports
 class Runner {
@@ -19,6 +21,9 @@ class Runner {
 		//object with a name property that has a value of the absolute path of
 		//the file
 		for (let file of this.testFiles) {
+			//console log to indicate that some tests are about to run for
+			//whichever file I'm iterating over
+			console.log(chalk.gray(`----${file.name}`));
 			//to mimic Mocha fully, define a beforeEach function
 			const beforeEaches = [];
 			global.beforeEach = (fn) => {
@@ -37,16 +42,16 @@ class Runner {
 					//If the test throws an error, this console.log will
 					//be skipped and the program will go straight to the catch
 					//statement
-					console.log(`OK - ${desc}`);
+					console.log(chalk.green(`OK - ${desc}`));
 				} catch (err) {
 					//add console log for feedback to the test re: error and on
 					//which test
-					console.log(`X - ${desc}`);
+					console.log(chalk.red(`X - ${desc}`));
 					//rather than printing out the whole error, just print the
 					//message without all the extraneous info that shows up in the
 					//console when there is an error. Also passing in '\t' as the
 					//first argument as this will indent the error message
-					console.log('\t', err.message);
+					console.log(chalk.red('\t', err.message));
 				}
 			};
 			//to execute each test file, require it.  Requiring in the file will
@@ -56,9 +61,8 @@ class Runner {
 			try {
 				require(file.name);
 			} catch (err) {
-				console.log('X - Error Loading File', file.name);
 				//console log what the typo was
-				console.log(err.message);
+				console.log(chalk.red(err.message));
 			}
 		}
 	}
