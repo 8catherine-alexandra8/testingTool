@@ -41,12 +41,13 @@ class Runner {
 			};
 			//define "it" globally passing in the description for "it",
 			//as defined in the forEach.test.js and the function associated
-			//with "it"
-			global.it = (desc, fn) => {
+			//with "it".  Making this async now so that it can work with the
+			//render function propertly
+			global.it = async (desc, fn) => {
 				beforeEaches.forEach((func) => func());
 				//adding try/catch for error handling
 				try {
-					fn();
+					await fn();
 					//add reporting so that if a test passes and the program
 					//moves on to the next test, the tester is told as much.
 					//If the test throws an error, this console.log will
