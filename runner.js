@@ -29,12 +29,37 @@ class Runner {
 			//with "it"
 			global.it = (desc, fn) => {
 				beforeEaches.forEach((func) => func());
-				fn();
+				//adding try/catch for error handling
+				try {
+					fn();
+					//add reporting so that if a test passes and the program
+					//moves on to the next test, the tester is told as much.
+					//If the test throws an error, this console.log will
+					//be skipped and the program will go straight to the catch
+					//statement
+					console.log(`OK - ${desc}`);
+				} catch (err) {
+					//add console log for feedback to the test re: error and on
+					//which test
+					console.log(`X - ${desc}`);
+					//rather than printing out the whole error, just print the
+					//message without all the extraneous info that shows up in the
+					//console when there is an error. Also passing in '\t' as the
+					//first argument as this will indent the error message
+					console.log('\t', err.message);
+				}
 			};
 			//to execute each test file, require it.  Requiring in the file will
 			//cause node to find the file, load up the code and execute the code
-			//insdie of it.
-			require(file.name);
+			//insdie of it.  Wrap require statement in try/catch to deal with
+			//any extraneous gibberish that might be inside the test file by mistake
+			try {
+				require(file.name);
+			} catch (err) {
+				console.log('X - Error Loading File', file.name);
+				//console log what the typo was
+				console.log(err.message);
+			}
 		}
 	}
 	//define a function for collecting the test files which will run
