@@ -4,6 +4,12 @@ const fs = require('fs');
 const path = require('path');
 //require in chalk to make the test responses color coded
 const chalk = require('chalk');
+//to make this test framework work on projects that rely on external dependencies
+//that may contain their own test files in their directories, set
+//up an array for directories that should be excluded from our search for test
+//files
+const forbiddenDirs = [ 'node_modules' ];
+
 //create class to contain all the functions in this file
 //and export it via module.exports
 class Runner {
@@ -23,7 +29,7 @@ class Runner {
 		for (let file of this.testFiles) {
 			//console log to indicate that some tests are about to run for
 			//whichever file I'm iterating over
-			console.log(chalk.white(`tesing file: ${file.shortName}`));
+			console.log(chalk.white(`testing file: ${file.shortName}`));
 			//to mimic Mocha fully, define a beforeEach function
 			const beforeEaches = [];
 			global.beforeEach = (fn) => {
@@ -41,17 +47,21 @@ class Runner {
 					//moves on to the next test, the tester is told as much.
 					//If the test throws an error, this console.log will
 					//be skipped and the program will go straight to the catch
-					//statement
-					console.log(chalk.green(`OK - ${desc}`));
+					//statement. Added tab \t to indent console log
+					console.log(chalk.green(`\tOK - ${desc}`));
 				} catch (err) {
+					//formatting error message so that, if it spans multiple lines,
+					//each new line character (\n) will be repalced with the same
+					//new line character, plus two tabs
+					const message = err.message.replace(/\n/g, '\n\t\t');
 					//add console log for feedback to the test re: error and on
-					//which test
-					console.log(chalk.red(`X - ${desc}`));
+					//which test. Added tab \t to indent console log
+					console.log(chalk.red(`\tX - ${desc}`));
 					//rather than printing out the whole error, just print the
 					//message without all the extraneous info that shows up in the
 					//console when there is an error. Also passing in '\t' as the
 					//first argument as this will indent the error message
-					console.log(chalk.red('\t', err.message));
+					console.log(chalk.red('\t', message));
 				}
 			};
 			//to execute each test file, require it.  Requiring in the file will
@@ -95,7 +105,12 @@ class Runner {
 				//the whole absolute file path. so passing in a reference to
 				//the relative path also, so that can be accessed later
 				this.testFiles.push({ name: filepath, shortName: file });
-			} else if (stats.isDirectory()) {
+				//adding in condition for excluding certain directories before
+				//proceeding with what to do if isDirecory
+			} else if (
+				stats.isDirectory() &&
+				!forbiddenDirs.includes(file)
+			) {
 				//if stats object is a directory, then create an array
 				//containing the contents of the folder
 				const childFiles = await fs.promises.readdir(filepath);
