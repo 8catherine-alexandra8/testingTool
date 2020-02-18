@@ -34,5 +34,26 @@ it('shows a success message with a valid email', async () => {
 
 	//select the h1 element, look at the inner html on it and verify the text in it
 	const h1 = dom.window.document.querySelector('h1');
-	console.log(h1.innerHTML);
+	assert.strictEqual(h1.innerHTML, 'Looks good!');
+});
+
+//test that a fail message shows up in the browser when user clicks submit,
+//after entering an invalid email (valid: has an @ symbol)
+it('shows a fail message with an invalid email', async () => {
+	//render the virtual dom environment again using index.html as the source
+	const dom = await render('index.html');
+	//get a reference to the input element
+	const input = dom.window.document.querySelector('input');
+	//create a fake input
+	input.value = 'fakegmail.com';
+	//trigger a form submission event by selecting form element, and manually
+	//dispatch an event of type = submit.  First select the form
+	dom.window.document
+		.querySelector('form')
+		//dispathc event passing in new event object that thinks it's getting a submit event
+		.dispatchEvent(new dom.window.Event('submit'));
+
+	//select the h1 element, look at the inner html on it and verify the text in it
+	const h1 = dom.window.document.querySelector('h1');
+	assert.strictEqual(h1.innerHTML, 'Invalid email');
 });
