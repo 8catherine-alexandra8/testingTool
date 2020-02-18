@@ -22,7 +22,18 @@ const render = async (filename) => {
 		runScripts : 'dangerously',
 		resources  : 'usable'
 	});
-	return dom;
+	//add code to get JSDOM to wait for index.js to load before running tests
+	//wrapping it inside of a promise that won't resolve until this event is
+	//triggered
+	return new Promise((resolve, reject) => {
+		dom.window.document.addEventListener('DOMContentLoaded', () => {
+			//call resolve once DOM content has fully loaded, passing in the dom
+			resolve(dom);
+		});
+	});
+	//no longer need to return dom here as the promise above is now
+	//returning the dom
+	//return dom;
 };
 //exporting but not calling the render function
 module.exports = render;
